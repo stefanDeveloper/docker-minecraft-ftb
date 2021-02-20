@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  minecraft:
+    image: jonasbonno/ftb-infinity
+    container_name: "minecraft"
+    tty: true
+    stdin_open: true
+    volumes:
+      - "./world:/minecraft/world"
+    ports:
+      - "25565:25565"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.minecraft.rule=Host(`minecraft.${DOMAIN}`)"
+      - "traefik.http.routers.minecraft.entrypoints=websecure"
+      - "traefik.http.routers.minecraft.tls.certresolver=mytlschallenge"
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
